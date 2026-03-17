@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kondent - Products</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --k-bg: #ffffff;
+      --k-orange: #ff7a1a;
+      --k-gray: #8a8a8a;
+      --k-font: "Jersey 25", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--k-bg);
+      font-family: var(--k-font);
+      color: #252525;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .page {
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .logo {
+      font-size: 28px;
+      color: var(--k-orange);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .logo:hover { transform: translateY(-2px); }
+    .back-link {
+      color: var(--k-orange);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+    .nav {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    .nav a {
+      color: #252525;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+    .nav a:hover {
+      border-bottom-color: var(--k-orange);
+    }
+    .hero {
+      border: 3px solid var(--k-orange);
+      box-shadow: 0 0 0 3px #fff, 6px 6px 0 #000;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255,122,26,0.12), #fff 40%, rgba(255,122,26,0.12));
+      background-size: 200% 200%;
+      margin-bottom: 28px;
+      animation: heroGlow 8s ease-in-out infinite;
+    }
+    .lustre-text {
+      display: inline-block;
+      font-weight: 800;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-size: 200% auto;
+      background-position: 0% center;
+    }
+    .lustre-text.lustre-shine { animation: lustre-shine 5s ease-in-out infinite; }
+    @keyframes lustre-shine { 0%, 100% { background-position: 0% center; } 50% { background-position: 100% center; } }
+    .lustre-light {
+      background-image: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.7) 45%, #fff 50%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.05) 100%);
+    }
+    .lustre-orange {
+      background-image: linear-gradient(90deg, rgba(255,122,26,0.5) 0%, rgba(255,122,26,0.85) 30%, #ff7a1a 45%, rgba(255,255,255,0.95) 50%, #ff7a1a 55%, rgba(255,122,26,0.85) 70%, rgba(255,122,26,0.5) 100%);
+    }
+    .hero-title {
+      font-size: 52px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .hero-title.lustre-text {
+      text-shadow: none;
+      filter: drop-shadow(2px 2px 0 #000);
+    }
+    .hero-sub {
+      margin-top: 12px;
+      font-size: 18px;
+      color: var(--k-gray);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .card {
+      border: 3px solid var(--k-orange);
+      box-shadow: 0 0 0 3px #fff, 4px 4px 0 rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.08);
+      padding: 28px 24px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255,122,26,0.12), transparent 40%);
+      opacity: 0.6;
+      pointer-events: none;
+      animation: cardPulse 6s ease-in-out infinite;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 0 0 3px #fff, 6px 6px 0 rgba(0,0,0,0.2), 0 20px 40px rgba(255,122,26,0.15);
+    }
+    .card:active {
+      transform: translateY(-2px) scale(0.98);
+      box-shadow: 0 0 0 3px #fff, 3px 3px 0 rgba(0,0,0,0.2);
+    }
+    .spotlight-card { --spotlight-x: 50%; --spotlight-y: 50%; --spotlight-color: 255, 122, 26; }
+    .spotlight-card-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      background: radial-gradient(
+        circle at var(--spotlight-x) var(--spotlight-y),
+        rgba(var(--spotlight-color), 0.25) 0%,
+        rgba(var(--spotlight-color), 0.08) 35%,
+        transparent 55%
+      );
+      border-radius: 0;
+    }
+    .spotlight-card:hover .spotlight-card-glow { opacity: 1; }
+    .badge {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: 2px solid rgba(0,0,0,0.2);
+      padding: 6px 10px;
+      width: fit-content;
+      margin-bottom: 14px;
+    }
+    .title {
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .desc {
+      font-size: 17px;
+      line-height: 1.65;
+      color: rgba(0,0,0,0.75);
+      margin-top: 12px;
+    }
+    .cta {
+      margin-top: 28px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cta a:not(.book-btn) {
+      color: var(--k-orange);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 20px;
+      border-bottom: 2px solid var(--k-orange);
+      padding-bottom: 4px;
+    }
+
+    @keyframes heroGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes cardPulse {
+      0% { opacity: 0.45; }
+      50% { opacity: 0.85; }
+      100% { opacity: 0.45; }
+    }
+    .section {
+      margin: 56px 0;
+    }
+    .section-title {
+      font-size: 36px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+    .section-text {
+      font-size: 20px;
+      color: rgba(0,0,0,0.78);
+      line-height: 1.75;
+      max-width: 900px;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+    .list-item {
+      border: 2px solid rgba(0,0,0,0.12);
+      padding: 16px 18px;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.12);
+      background: #fff;
+      font-size: 18px;
+    }
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+    .timeline-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      border: 2px solid rgba(0,0,0,0.12);
+      padding: 18px 20px;
+      background: #fff;
+    }
+    .step-num {
+      min-width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--k-orange);
+      color: var(--k-orange);
+      font-size: 14px;
+    }
+    .faq {
+      display: grid;
+      gap: 10px;
+    }
+    .faq-item {
+      border: 2px solid rgba(0,0,0,0.12);
+      padding: 18px 20px;
+      background: #fff;
+    }
+    .faq-q {
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .footer {
+      margin-top: 60px;
+      padding: 24px 16px 40px;
+      text-align: center;
+      color: var(--k-gray);
+      font-size: 14px;
+      border-top: 2px dashed rgba(0,0,0,0.2);
+    }
+    .footer a {
+      color: var(--k-orange);
+      text-decoration: none;
+    }
+    .fx-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,122,26,0.12), transparent 35%),
+        radial-gradient(circle at 80% 10%, rgba(255,122,26,0.08), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(0,0,0,0.04), transparent 45%);
+      animation: fxFloat 12s ease-in-out infinite;
+    }
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04),
+        rgba(0,0,0,0.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      opacity: 0.35;
+    }
+    .strobe-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: rgba(255, 122, 26, 0.12);
+      opacity: 1;
+      mix-blend-mode: screen;
+      animation: strobeFlash 1.6s infinite;
+    }
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(0,0,0,0.08);
+      z-index: 5;
+    }
+    .scroll-progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--k-orange);
+      box-shadow: 0 0 12px rgba(255,122,26,0.6);
+      transition: width 0.1s linear;
+    }
+    .accordion-item {
+      border: 2px solid rgba(0,0,0,0.12);
+      padding: 12px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .accordion-body { display: none; margin-top: 8px; color: rgba(0,0,0,0.7); }
+    .accordion-item.open .accordion-body { display: block; }
+    @keyframes fxFloat {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes strobeFlash {
+      0%, 68%, 100% { opacity: 0; }
+      70% { opacity: 0.35; }
+      72% { opacity: 0; }
+      85% { opacity: 0.25; }
+      88% { opacity: 0; }
+    }
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(
+        ellipse 600px 400px at var(--spot-x, 50%) var(--spot-y, 50%),
+        rgba(255, 122, 26, 0.12),
+        transparent 70%
+      );
+      opacity: 0.8;
+    }
+    .particle-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--k-orange);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 8s ease-in-out infinite;
+    }
+    @keyframes particleFloat {
+      0% { opacity: 0; transform: translateY(100vh) scale(0.5); }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% { opacity: 0; transform: translateY(-20vh) scale(1.2); }
+    }
+    .glow-line {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--k-orange), transparent);
+      background-size: 200% 100%;
+      animation: glowLineMove 4s linear infinite;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(255, 122, 26, 0.6);
+    }
+    @keyframes glowLineMove {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; }
+      .hero-title { font-size: 36px; }
+      .card { padding: 22px 20px; }
+      .section-title { font-size: 28px; }
+      .section-text { font-size: 18px; }
+      .list-item, .faq-q { font-size: 16px; }
+    }
+    .click-fx { position: relative; overflow: hidden; }
+    .click-fx .ripple {
+      position: absolute; border-radius: 50%; background: rgba(255, 122, 26, 0.45);
+      transform: scale(0); pointer-events: none;
+      animation: ripple-out 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes ripple-out { to { transform: scale(2.5); opacity: 0; } }
+    .click-fx:active { transform: scale(0.97); }
+    a.click-fx:active, button.click-fx:active { transform: scale(0.96); }
+    .card.click-fx:active { transform: translate(-2px, -2px) scale(0.98); }
+    .accordion-item.click-fx:active { transform: scale(0.99); }
+
+    /* Text generate effect - words appear with blur-to-clear stagger */
+    .text-generate-effect {
+      font-weight: 700;
+    }
+    .text-generate-effect .tg-word {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(10px);
+      transition: opacity 0.5s ease, filter 0.5s ease;
+    }
+    .text-generate-effect.tg-animated .tg-word {
+      opacity: 1;
+      filter: blur(0);
+    }
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: blur(8px);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    /* Booking Modal */
+    body.booking-modal-open { cursor: auto !important; }
+    body.booking-modal-open * { cursor: inherit !important; }
+    body.booking-modal-open a, body.booking-modal-open button, body.booking-modal-open input, body.booking-modal-open [role="button"] { cursor: pointer !important; }
+    body.booking-modal-open input[type="email"], body.booking-modal-open input[type="tel"], body.booking-modal-open textarea { cursor: text !important; }
+    .booking-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .booking-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .booking-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(255, 122, 26, 0.08) 50%, rgba(0, 0, 0, 0.7) 100%);
+      background-size: 200% 200%;
+      animation: bookingBgShift 8s ease-in-out infinite;
+      backdrop-filter: blur(4px);
+    }
+    @keyframes bookingBgShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .booking-modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      cursor: default;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 3px solid #000000;
+      box-shadow: 0 0 0 3px #fff, 10px 10px 0 0 #000;
+      border-radius: 4px;
+      padding: 32px 28px 48px;
+      transform: translateY(12px);
+      transition: transform 0.3s ease;
+    }
+    .booking-modal.is-open .booking-modal-card {
+      transform: translateY(0);
+    }
+    .booking-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      font-size: 28px;
+      line-height: 1;
+      color: #252525;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .booking-modal-close:hover { color: var(--k-orange); }
+    .booking-step {
+      display: none;
+      animation: bookingFadeIn 0.3s ease;
+    }
+    .booking-step.is-active { display: block; }
+    @keyframes bookingFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .booking-step-title {
+      font-family: var(--k-font);
+      font-size: 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #252525;
+      margin-bottom: 24px;
+    }
+    .booking-step-hint {
+      font-size: 14px;
+      color: var(--k-gray);
+      margin-bottom: 16px;
+    }
+    .booking-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .booking-option {
+      padding: 14px 20px;
+      font-family: var(--k-font);
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: #fff;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #252525;
+    }
+    .booking-option:hover {
+      border-color: var(--k-orange);
+      background: rgba(255, 122, 26, 0.06);
+    }
+    .booking-option.is-selected {
+      border-color: var(--k-orange);
+      background: var(--k-orange);
+      color: #fff;
+    }
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .booking-label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: var(--k-font);
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #252525;
+    }
+    .booking-label input {
+      padding: 14px 16px;
+      font-family: var(--k-font);
+      font-size: 16px;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .booking-label input:focus {
+      outline: none;
+      border-color: var(--k-orange);
+    }
+    .booking-submit {
+      margin-top: 8px;
+      padding: 16px 24px;
+      font-family: var(--k-font);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--k-orange);
+      color: #fff;
+      border: 3px solid #000;
+      box-shadow: 0 0 0 2px #fff, 4px 4px 0 0 #000;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .booking-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 2px #fff, 6px 6px 0 0 #000;
+    }
+    .booking-step-success {
+      text-align: center;
+      padding: 24px 0;
+    }
+    .booking-success-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: var(--k-orange);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 32px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #000;
+    }
+    .booking-success-msg {
+      font-size: 16px;
+      color: var(--k-gray);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .booking-close-btn {
+      padding: 12px 28px;
+      font-family: var(--k-font);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #fff;
+      color: var(--k-orange);
+      border: 2px solid var(--k-orange);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .booking-close-btn:hover {
+      background: var(--k-orange);
+      color: #fff;
+    }
+    .booking-progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .booking-progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+    .booking-progress-dot.is-active {
+      background: var(--k-orange);
+      transform: scale(1.2);
+    }
+    .booking-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+    .booking-prev, .booking-next {
+      padding: 10px 20px;
+      font-family: var(--k-font);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #fff;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #252525;
+    }
+    .booking-prev:hover, .booking-next:hover {
+      border-color: var(--k-orange);
+      background: rgba(255, 122, 26, 0.06);
+    }
+    .booking-modal.is-success .booking-progress,
+    .booking-modal.is-success .booking-nav {
+      display: none;
+    }
+    .book-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-family: var(--k-font);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--k-orange);
+      color: #fff;
+      border: 3px solid #000;
+      box-shadow: 0 0 0 2px #fff, 4px 4px 0 0 #000;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+    .book-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 2px #fff, 6px 6px 0 0 #000;
+    }
+    .cta .book-btn {
+      margin-top: 0;
+      font-size: 20px;
+      padding: 0;
+      background: transparent;
+      color: var(--k-orange);
+      border: none;
+      box-shadow: none;
+      border-bottom: 2px solid var(--k-orange);
+      padding-bottom: 4px;
+      border-radius: 0;
+    }
+    .cta .book-btn:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <video class="video-background" autoplay loop muted playsinline>
+    <source src="background video/6917978_Motion_Graphics_Motion_Graphic_3840x2160.mp4" type="video/mp4">
+  </video>
+  <div class="spotlight"></div>
+  <div class="particle-layer" id="particleLayer"></div>
+  <div class="glow-line"></div>
+  <div class="fx-layer"></div>
+  <div class="scanlines"></div>
+  <div class="strobe-layer"></div>
+  <div class="scroll-progress"><span></span></div>
+  <div class="page">
+    <header class="top-bar">
+      <a class="logo" href="index.html">Kondent</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+
+      </nav>
+      <a class="back-link" href="index.html">Back</a>
+    </header>
+
+    <section class="hero">
+      <div class="hero-title lustre-text lustre-orange lustre-shine">Products</div>
+      <div class="hero-sub">Choose your build - every product is a cheat code for scaling your business with AI.</div>
+      <div style="margin-top: 24px;">
+        <a href="#" class="book-btn open-booking-modal click-fx">Book a Consultation</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <a class="card" href="consultation.html">
+        <div class="badge">Core</div>
+        <div class="title">Consultation</div>
+        <div class="desc">A focused strategy sprint to map your business workflows, audience journey, and growth plan.</div>
+      </a>
+      <a class="card" href="dna-workflow.html">
+        <div class="badge">System</div>
+        <div class="title">Business Automation Workflow</div>
+        <div class="desc">Custom automations that turn raw leads into scheduled appointments with zero guesswork.</div>
+      </a>
+      <a class="card" href="plugins-integrations.html">
+        <div class="badge">Build</div>
+        <div class="title">Custom AI Plugins & Integrations</div>
+        <div class="desc">We connect your stack and build custom plugins so your workflow runs like a game engine.</div>
+      </a>
+    </section>
+
+    <section class="section">
+      <div class="section-title text-generate-effect" data-tg-text="What You Get">What You Get</div>
+      <div class="split">
+        <div class="section-text text-generate-effect" data-tg-text="Each product is built to remove the guesswork. We translate your business workflows into a system that can be repeated, measured, and scaled. Think of it like upgrading from manual mode to autopilot without losing your personal touch.">
+          Each product is built to remove the guesswork. We translate your business workflows into a system that can be repeated, measured, and scaled. Think of it like upgrading from manual mode to autopilot without losing your personal touch.
+        </div>
+        <div class="list">
+          <div class="list-item">Business workflow map and CRM configuration</div>
+          <div class="list-item">Hook and packaging framework</div>
+          <div class="list-item">Automation plan with tool stack</div>
+          <div class="list-item">Weekly execution cadence</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title text-generate-effect" data-tg-text="How It Ships">How It Ships</div>
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="step-num">01</div>
+          <div class="section-text">Audit your current business processes and capture the signals that already convert.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-num">02</div>
+          <div class="section-text">Build your workflow or plugin layer and connect tools into one path.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-num">03</div>
+          <div class="section-text">Launch, optimize, and hand over a system your team can run weekly.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title text-generate-effect" data-tg-text="FAQ">FAQ</div>
+      <div class="faq">
+        <div class="accordion-item">
+          <div class="faq-q">How long does a build take?</div>
+          <div class="accordion-body">Most builds ship in 2 to 4 weeks depending on scope.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="faq-q">Do you work with small businesses?</div>
+          <div class="accordion-body">Yes. The workflows scale from day one and grow with your audience.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="faq-q">Can I upgrade later?</div>
+          <div class="accordion-body">Absolutely. You can start with a consultation and level up into a full system.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta">
+
+      <a href="#" class="book-btn open-booking-modal click-fx">Book Now</a>
+    </div>
+
+    <footer class="footer">
+      <div>© 2026 Kondent. All rights reserved.</div>
+      <div><a href="index.html">Home</a> • <a href="mailto:kondent.hey@outlook.com">Contact</a></div>
+      <div style="margin-top: 8px;"><a href="mailto:kondent.hey@outlook.com">kondent.hey@outlook.com</a></div>
+    </footer>
+  </div>
+  <!-- Booking Modal -->
+  <div id="booking-modal" class="booking-modal" aria-hidden="true">
+    <div class="booking-modal-backdrop"></div>
+    <div class="booking-modal-card">
+      <button type="button" class="booking-modal-close" aria-label="Close">&times;</button>
+      <div class="booking-modal-content">
+        <div class="booking-step booking-step-1 is-active" data-step="1">
+          <h3 class="booking-step-title">Choose your tier</h3>
+          <p class="booking-step-hint">Both tiers billed monthly — fits everyone.</p>
+          <div class="booking-options">
+            <button type="button" class="booking-option" data-tier="Standard">Standard</button>
+            <button type="button" class="booking-option" data-tier="Top">Top tier</button>
+          </div>
+        </div>
+        <div class="booking-step booking-step-2" data-step="2">
+          <h3 class="booking-step-title">How can we reach you?</h3>
+          <form class="booking-form" id="booking-form">
+            <label class="booking-label">
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@example.com" required>
+            </label>
+            <label class="booking-label">
+              <span>WhatsApp number</span>
+              <input type="tel" name="whatsapp" placeholder="+1 234 567 8900" required>
+            </label>
+            <button type="submit" class="booking-submit">Submit — We&rsquo;ll contact you</button>
+          </form>
+        </div>
+        <div class="booking-step booking-step-success" data-step="success">
+          <div class="booking-success-icon">✓</div>
+          <h3 class="booking-step-title">We&rsquo;ll be in touch!</h3>
+          <p class="booking-success-msg">Thanks for reaching out. Our team will contact you via email and WhatsApp shortly.</p>
+          <button type="button" class="booking-close-btn">Close</button>
+        </div>
+      </div>
+      <div class="booking-progress">
+        <span class="booking-progress-dot is-active"></span>
+        <span class="booking-progress-dot"></span>
+      </div>
+      <div class="booking-nav">
+        <button type="button" class="booking-prev" style="visibility: hidden;">← Back</button>
+        <button type="button" class="booking-next">Next →</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var sel = 'a, button, .card, .accordion-item';
+      function createRipple(el, x, y) {
+        if (!el || !el.classList.contains('click-fx')) return;
+        var rect = el.getBoundingClientRect();
+        var ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        var size = Math.max(rect.width, rect.height) * 1.2;
+        ripple.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (x - rect.left - size/2) + 'px;top:' + (y - rect.top - size/2) + 'px;';
+        el.appendChild(ripple);
+        setTimeout(function() { if (ripple.parentNode) ripple.parentNode.removeChild(ripple); }, 700);
+      }
+      document.querySelectorAll(sel).forEach(function(n) { n.classList.add('click-fx'); });
+      document.body.addEventListener('click', function(e) {
+        var el = e.target.closest(sel);
+        if (el && el.classList.contains('click-fx')) createRipple(el, e.clientX, e.clientY);
+      });
+    })();
+    (function spotlightCards() {
+      function createGlow(card) {
+        if (card.querySelector('.spotlight-card-glow')) return;
+        card.classList.add('spotlight-card');
+        var glow = document.createElement('div');
+        glow.className = 'spotlight-card-glow';
+        glow.setAttribute('aria-hidden', 'true');
+        card.insertBefore(glow, card.firstChild);
+      }
+      function updateSpotlight(card, e) {
+        var rect = card.getBoundingClientRect();
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--spotlight-x', x + '%');
+        card.style.setProperty('--spotlight-y', y + '%');
+      }
+      document.addEventListener('mousemove', function(e) {
+        var card = e.target.closest('.spotlight-card');
+        if (card) updateSpotlight(card, e);
+      });
+      document.querySelectorAll('.card').forEach(createGlow);
+    })();
+    document.querySelectorAll('.accordion-item').forEach((item) => {
+      item.addEventListener('click', () => item.classList.toggle('open'));
+    });
+    const progress = document.querySelector('.scroll-progress span');
+    const updateProgress = () => {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+      progress.style.width = pct + '%';
+    };
+    updateProgress();
+    window.addEventListener('scroll', updateProgress);
+
+    const spotlight = document.querySelector('.spotlight');
+    if (spotlight) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        spotlight.style.setProperty('--spot-x', x + '%');
+        spotlight.style.setProperty('--spot-y', y + '%');
+      });
+    }
+
+    const particleLayer = document.getElementById('particleLayer');
+    if (particleLayer) {
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+        particleLayer.appendChild(particle);
+      }
+    }
+
+    /* Text generate effect - blur-to-clear stagger on words */
+    (function textGenerateEffect() {
+      var stagger = 0.1;
+      var els = document.querySelectorAll('.text-generate-effect');
+      els.forEach(function(el) {
+        var text = el.getAttribute('data-tg-text') || el.textContent.trim();
+        var parts = text.split(/(\s+)/);
+        var html = '';
+        var wi = 0;
+        parts.forEach(function(p) {
+          if (/^\s+$/.test(p)) {
+            html += p;
+          } else {
+            html += '<span class="tg-word" style="transition-delay:' + (wi * stagger) + 's">' + p + '</span>';
+            wi++;
+          }
+        });
+        el.innerHTML = html;
+      });
+      var io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) e.target.classList.add('tg-animated');
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' }) : null;
+      if (io) els.forEach(function(el) { io.observe(el); });
+      else els.forEach(function(el) { el.classList.add('tg-animated'); });
+    })();
+    (function bookingModal() {
+      var modal = document.getElementById('booking-modal');
+      if (!modal) return;
+      var steps = modal.querySelectorAll('.booking-step[data-step]');
+      var progressDots = modal.querySelectorAll('.booking-progress-dot');
+      var prevBtn = modal.querySelector('.booking-prev');
+      var nextBtn = modal.querySelector('.booking-next');
+      var form = document.getElementById('booking-form');
+      var data = { tier: null };
+      var currentStep = 1;
+      function showStep(n) {
+        currentStep = n;
+        var isSuccess = n === 'success';
+        steps.forEach(function(s) {
+          var stepAttr = s.getAttribute('data-step');
+          if (stepAttr === 'success') {
+            s.classList.toggle('is-active', isSuccess);
+          } else {
+            var stepNum = parseInt(stepAttr, 10);
+            s.classList.toggle('is-active', !isSuccess && stepNum === n);
+          }
+        });
+        progressDots.forEach(function(d, i) {
+          d.classList.toggle('is-active', i < (isSuccess ? 2 : n));
+        });
+        prevBtn.style.visibility = (n <= 1 || isSuccess) ? 'hidden' : 'visible';
+        nextBtn.style.display = (n === 2 || isSuccess) ? 'none' : 'block';
+      }
+      function openModal() {
+        document.body.classList.add('booking-modal-open');
+        modal.classList.add('is-open');
+        modal.classList.remove('is-success');
+        modal.setAttribute('aria-hidden', 'false');
+        currentStep = 1;
+        data = { tier: null };
+        modal.querySelectorAll('.booking-option').forEach(function(btn) {
+          btn.classList.remove('is-selected');
+        });
+        if (form) form.reset();
+        showStep(1);
+      }
+      function closeModal() {
+        document.body.classList.remove('booking-modal-open');
+        modal.classList.remove('is-open', 'is-success');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+      document.querySelectorAll('.open-booking-modal').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openModal();
+        });
+      });
+      modal.querySelector('.booking-modal-close').addEventListener('click', closeModal);
+      modal.querySelector('.booking-modal-backdrop').addEventListener('click', closeModal);
+      var closeSuccess = modal.querySelector('.booking-close-btn');
+      if (closeSuccess) closeSuccess.addEventListener('click', closeModal);
+      prevBtn.addEventListener('click', function() {
+        if (currentStep > 1) showStep(currentStep - 1);
+      });
+      nextBtn.addEventListener('click', function() {
+        if (currentStep < 2) {
+          if (currentStep === 1 && !data.tier) return;
+          showStep(currentStep + 1);
+        }
+      });
+      modal.querySelectorAll('.booking-step-1 .booking-option').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          modal.querySelectorAll('.booking-step-1 .booking-option').forEach(function(b) { b.classList.remove('is-selected'); });
+          btn.classList.add('is-selected');
+          data.tier = btn.getAttribute('data-tier');
+        });
+      });
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var fd = new FormData(form);
+          data.email = fd.get('email');
+          data.whatsapp = fd.get('whatsapp');
+          modal.classList.add('is-success');
+          showStep('success');
+        });
+      }
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
